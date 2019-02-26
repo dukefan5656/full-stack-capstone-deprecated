@@ -1,7 +1,7 @@
 export const LOG_IN_SUCCESS = 'LOG_IN_SUCCESS';
-export const logIn = (username, password) => {
+export const logIn = (email, password) => {
   return dispatch => {
-    dispatch({ type: LOG_IN_SUCCESS, username });
+    dispatch({ type: LOG_IN_SUCCESS, email });
     console.log('test');
     return fetch(`/auth/login`, {
       method: 'POST',
@@ -9,7 +9,7 @@ export const logIn = (username, password) => {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        username, 
+        email, 
         password
       })
     })
@@ -34,8 +34,8 @@ export const logIn = (username, password) => {
 }
 
 const logInSuccess = (json) => {
-  const {id, username, userType } = json;
-  return { id, username, userType, type: LOG_IN_SUCCESS }
+  const {id, email, userType } = json;
+  return { id, email, userType, type: LOG_IN_SUCCESS }
 }
 
 const logInFailure = (error) => {

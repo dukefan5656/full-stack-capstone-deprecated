@@ -1,13 +1,39 @@
-import React from 'react';
+import React from "react";
+import ReceivedBids from "./SellerBidsComponent";
+import MiniSellerListings from "./MiniSellerListingsComponent";
+import SellerMain from "./SellerProfileMainComponent";
+import Navbar from "./NavbarComponent";
+import ListingForm from "./CreateListing";
 
-function renderEntries(entries){
-  console.log(entries);
-  return <p key={1}>{entries}</p>;
-};
+export default class Seller extends React.Component {
+  constructor(props) {
+    super(props);
 
-export default function Listing({entries, loaded}) {
+    this.state = {
+      editing: false,
+      bids: [{ amount: 5000, agent: "Chris Rudder" }],
+      listings: []
+    };
+  }
+  setEditing(editing) {
+    this.setState({
+        editing
+    });
+}
+  render() {
 
-  
-
-  return <div>{renderEntries(entries)}</div>
+    return (
+      <div>
+        <Navbar />
+        {this.state.bids.map(bid => {
+          return <ReceivedBids {...bid} />;
+        })}
+        {this.state.listings.map(listing => {
+          return <MiniSellerListings {...listing} />;
+        })}
+        <SellerMain />
+        <ListingForm />
+      </div>
+    );
+  }
 }

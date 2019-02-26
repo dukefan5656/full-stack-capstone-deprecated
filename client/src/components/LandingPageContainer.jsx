@@ -1,26 +1,19 @@
-import React from 'react';
-import history from '../history';
-import LandingNavbar from './LandingNavbarContainer';
-import LandingDescription from './LandingDescriptionContainer';
+import React from "react";
+import { Link } from "react-router-dom";
+import LandingNavbar from "./LandingNavbarContainer";
+import LandingDescription from "./LandingDescriptionContainer";
 
-export default function LandingPage(){
+export default function LandingPage() {
   return (
     <div>
-    <LandingNavbar />
+      <LandingNavbar />
 
-    <div className="description">
-      <LandingDescription />
-      <button className="signup" onClick={() => {
-          history.push('/signup');}}>
-        register
-      </button>
-      <button className="login" onClick={() => {
-          history.push('/login');
-      }}>
-        login
-      </button>
+      <div className="description">
+        <LandingDescription />
+        <Link to="/signup">Sign-up</Link>
+
+        <Link to="login">Login</Link>
+      </div>
     </div>
-    </div>
-  )
+  );
 }
-
