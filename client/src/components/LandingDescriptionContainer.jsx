@@ -6,8 +6,8 @@ export default function LandingDescription() {
     <div className="landing-description-container">
       <div className="headline-container">
         <p>
-          We put the power in the hands of the seller. In this seller's market,
-          it is important to maximize your opportunity.
+          WE PUT THE POWER IN THE HANDS OF THE SELLER. IN THIS SELLER'S MARKET,
+          IT IS IMPORTANT TO MAXIMIZE YOUR OPPORTUNITY.
         </p>
       </div>
       <div class="features-container">
@@ -15,23 +15,23 @@ export default function LandingDescription() {
           <div>
             <img src="./images/collaboration.png" />
             <span>
-              Set a budget for your trip and track it dynamically as you create
-              legs for your vacation.
+              <p>LIST YOUR PROPERTY</p>
+              <p>Whether you are selling your house, land, or commercial space, you can list with the confidence that you are in control and will get the best possible price for your listing.</p>
             </span>
           </div>
 
           <div class="features-child">
             <img src="./images/hotel-building.png" />
             <span>
-              Include lodging information so you can easily view and manage
-              bookings.
+              <p>ONCE YOU'VE LISTED</p>
+              <p>When you list your property, agents will bid on what they believe they can sell your property for. You can also require a bid for commission percentage and other factors involved in the sale.</p>
             </span>
           </div>
           <div class="features-child">
             <img src="./images/route.png" />
             <span>
-              Add routing information to your journey so that you can easily
-              manage scheduling to each destination.
+              <p>BIDS</p>
+              <p>You will also be able to set what kind of bidding you'd like. Whether the bids are silent or public. Also, you can set whether you will field private offers from buyers.</p>
             </span>
           </div>
         </div>

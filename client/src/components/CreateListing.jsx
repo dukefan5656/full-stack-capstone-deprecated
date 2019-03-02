@@ -1,6 +1,9 @@
 import React from "react";
+import { connect } from 'react-redux';
+import {addListing} from '../actions/index'
 
-export default class ListingForm extends React.Component {
+
+export class ListingForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -23,6 +26,8 @@ export default class ListingForm extends React.Component {
       <form
         onSubmit={event => {
           event.preventDefault();
+          this.props.addListing(this.state);
+          /*
           this.props.listing(
             this.state.images,
             this.state.headline,
@@ -33,6 +38,8 @@ export default class ListingForm extends React.Component {
             this.state.footage,
             this.state.description
           );
+          this.props.addListing(this.state);
+          */
         }}
       >
         <div className="form-group">
@@ -153,3 +160,24 @@ export default class ListingForm extends React.Component {
     );
   }
 }
+//get data from store
+// function mapStateToProps(state){ 
+//   return {
+//     listing: state.listing 
+//   }
+// }
+
+// function mapDispatchToProps(dispatch){
+//   return {
+//     addListing: (item) => {
+//       dispatch({ type: 'ADD', payload: item })
+//     }
+//   }
+// }
+
+// export default connect(mapStateToProps, mapDispatchToProps)(Seller)
+
+export default connect(
+  null,
+  dispatch => ({ addListing: (...args) => dispatch(addListing(...args))})
+)(ListingForm);

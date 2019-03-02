@@ -4,8 +4,10 @@ import MiniSellerListings from "./MiniSellerListingsComponent";
 import SellerMain from "./SellerProfileMainComponent";
 import Navbar from "./NavbarComponent";
 import ListingForm from "./CreateListing";
+import { connect } from 'react-redux';
+import { getSellerPayload } from '.././actions/index';
 
-export default class Seller extends React.Component {
+export class Seller extends React.Component {
   constructor(props) {
     super(props);
 
@@ -19,9 +21,14 @@ export default class Seller extends React.Component {
     this.setState({
         editing
     });
+  }
+  componentDidMount(){
+   return this.props.getPayload();
 }
-  render() {
 
+
+  render() {
+    console.log(this.props.listings);
     return (
       <div>
         <Navbar />
@@ -37,3 +44,19 @@ export default class Seller extends React.Component {
     );
   }
 }
+
+export default connect(
+  state => {
+    const user_id = "5c6f33e44874263ed8818d6e";
+    // const user_id = state.user.id;
+    const userListings = Object.values(state.listing).filter(listing => listing.user === user_id);
+    return {
+      listings: userListings
+    }
+  },
+  dispatch => {
+    return {
+     getPayload: () => dispatch(getSellerPayload())
+    }
+  }
+)(Seller);

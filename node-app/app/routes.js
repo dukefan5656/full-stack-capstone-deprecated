@@ -5,22 +5,35 @@ module.exports = function(app, passport) {
     res.send("hello");
   });
 
-  app.get("/sellerProfile", isLoggedIn, (req, res, next) => {
-    console.log(req.session.passport.user);
+  app.get('/listing/:id', (req, res, next) => {
+    Listing.findOne({_id: {$in: req.params.id}})
+    .populate("listing")
+    .then(listing => {
+      console.log(listing);
+      return res.json({listing})
+    })
+    .catch(next);
+  })
+
+  app.get("/seller_profile", (req, res, next) => {
+    // console.log(req.session.passport.user);
     let user = req.user;
-    let userID = req.user._id;
+    user = {
+      _id: "5c6f33e44874263ed8818d6e"
+    }
+    // let userID = req.user._id;
     //query the user and it will populate
-    Listing.find({ _id: { $in: user.listing } })
+  Listing.find({ _id: { $in: /*user.listing*/"5c6f33f94874263ed8818d6f" } })
       .populate("listing")
-      .then(listing => {
-        res.json({
-          user
+      .then(listings => {
+        return res.json({
+          user, listings
         });
       })
       .catch(next);
   });
 
-  app.get("/agentProfile", isLoggedIn, (req, res, next) => {
+  app.get("/agent_profile", (req, res, next) => {
     let user = req.user;
     let userId = req.user._id;
     Bid.find({ _id: { $in: user.bid } })
