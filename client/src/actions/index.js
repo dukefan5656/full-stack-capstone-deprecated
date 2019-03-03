@@ -1,11 +1,48 @@
 import {API_BASE_URL} from '../config/api';
 
+export const SIGN_UP_SUCCESS = 'SIGN_UP_SUCCESS';
+export const signUp = (email, password, type) => {
+  return dispatch => {
+    dispatch({ type: SIGN_UP_SUCCESS, email });
+    console.log('test');
+    return fetch(`/auth/signup`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        email, 
+        password,
+        type
+      })
+    })
+    .then(res => { 
+      if(res.headers.get('Content-Type').includes('application/json')){
+        if(res.ok){
+          return res.json();
+        }
+
+        return res.json().then(json => {
+          throw Error('API: ' + JSON.stringify(json));
+        });
+      }
+
+      return res.text().then(text => {
+        throw Error('HTTP ' + res.status + ' : ' + text);
+      })
+     })
+     .then(json => dispatch(signUpSuccess(json)))
+     .catch(error => dispatch(signUpFailure(error)))
+  }
+}
+
+
 export const LOG_IN_SUCCESS = 'LOG_IN_SUCCESS';
 export const logIn = (email, password) => {
   return dispatch => {
     dispatch({ type: LOG_IN_SUCCESS, email });
     console.log('test');
-    return fetch(`/auth/login`, {
+    return fetch(`/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -34,6 +71,19 @@ export const logIn = (email, password) => {
      .catch(error => dispatch(logInFailure(error)))
   }
 }
+
+const signUpSuccess = (json) => {
+  const {id, email, userType } = json;
+  return { id, email, userType, type: LOG_IN_SUCCESS }
+}
+
+const signUpFailure = (error) => {
+  return {type: LOG_IN_FAILURE, message : error}
+}
+
+export const SIGN_UP_FAILURE = ''
+
+export const SIGN_UP_REQUEST = ''
 
 const logInSuccess = (json) => {
   const {id, email, userType } = json;

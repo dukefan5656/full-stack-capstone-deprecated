@@ -11,8 +11,8 @@ const userSchema = mongoose.Schema({
     firstName: String,
     lastName: String,
     type: String,
-    listing: {type: mongoose.Schema.Types.ObjectId,
-                 ref: "Listing"},
+    listings: [{type: mongoose.Schema.Types.ObjectId,
+                 ref: "Listing"}],
     bids: [{type: mongoose.Schema.Types.ObjectId,
     ref: "Bid"}],
 },{usePushEach: true});
@@ -57,7 +57,7 @@ const listingSchema = mongoose.Schema ({
 
   userSchema.pre('find',function(next){
     this.populate('listing');
-    this.populate('bid');
+    this.populate('bids');
     next();
   });
 

@@ -15,16 +15,14 @@ module.exports = function(app, passport) {
     .catch(next);
   })
 
-  app.get("/seller_profile", (req, res, next) => {
+  app.get("/seller_profile", isLoggedIn, (req, res, next) => {
     // console.log(req.session.passport.user);
-    let user = req.user;
-    user = {
-      _id: "5c6f33e44874263ed8818d6e"
-    }
+    let user = req.session.passport.user;
+
     // let userID = req.user._id;
     //query the user and it will populate
-  Listing.find({ _id: { $in: /*user.listing*/"5c6f33f94874263ed8818d6f" } })
-      .populate("listing")
+  User.find({ _id: { $in: /*user.listing*/user } })
+      .populate("listings")
       .then(listings => {
         return res.json({
           user, listings
@@ -34,12 +32,11 @@ module.exports = function(app, passport) {
   });
 
   app.get("/agent_profile", (req, res, next) => {
-    let user = req.user;
-    let userId = req.user._id;
-    Bid.find({ _id: { $in: user.bid } })
-      .populate("bid")
-      .then(bid => {
-        res.json({ user });
+    let user = req.session.passport.user;
+    User.find({ _id: { $in: user} })
+      .populate("bids")
+      .then(bids => {
+        res.json({ user, bids });
       })
       .catch(next);
   });
@@ -47,7 +44,7 @@ module.exports = function(app, passport) {
   app.post("/createBid/:id", isLoggedIn, (req, res, next) => {
     for (const param of ["amount"]) {
       if (req.body[param] !== undefined && isNaN(Number(req.body[param]))) {
-        return res.redirect("/sellerProfile");
+        return res.redirect("/seller_profile");
       }
     }
     let listingID = req.params.id;
@@ -60,32 +57,30 @@ module.exports = function(app, passport) {
         return (newBid = bid);
       })
       .then(createdBid => {
-        User.update({ bid: createdBid._id })
-          .then(() => {
-            console.log(listingID);
-            return Listing.findById(listingID);
-          })
-          .then(listing => {
-            console.log(listing.bids);
-            // listing.bids.$.push(bidID); use $push
-            res.json(newBid);
-          })
-          .catch(next);
+        console.log('this is the bid', newBid)
+        return User.findById(req.session.passport.user)
+      })
+      .then(userToUpdate => {
+        console.log('this is the user', userToUpdate.bids);
+        userToUpdate.bids.push(bidID)
+        userToUpdate.save()
+      })
+      .then(() => {
+        res.json(newBid)
+      })
+      .catch(next);
       });
-  });
 
   app.delete("/deleteListing/:id", isLoggedIn, (req, res, next) => {
     let id = req.params.id;
     Listing.findByIdAndRemove(id)
       .then(() => {
-        res.redirect("/sellerProfile");
+        res.redirect("/seller_profile");
       })
       .catch(next);
   });
 
-  app.post("/createListing", isLoggedIn, (req, res, next) => {
-    let userID = req.user._id;
-    let listingID;
+  app.post("/createListing", (req, res, next) => {
     let newListing = {
       headline: req.body.headline,
       address: {
@@ -95,7 +90,7 @@ module.exports = function(app, passport) {
         state: req.body.state
       },
       bids: [],
-      user: userID,
+      user: req.session.passport.user,
       type: req.body.type,
       bed: req.body.bed,
       bath: req.body.bath,
@@ -103,14 +98,18 @@ module.exports = function(app, passport) {
       description: req.body.description
     };
     Listing.create(newListing)
-      .then(listing => {
+      .then((listing) => {
         listingID = listing._id;
         return (newListing = listing);
       })
-      .then(() => {
-        return User.findByIdAndUpdate(userID, {
-          $set: { listing: listingID, type: "agent" }
-        });
+      .then(listing => {
+        console.log('this is the listing', listing);
+        return User.findById(req.session.passport.user)
+      })
+      .then(userToUpdate => {
+        console.log('this is the user to update', userToUpdate.listings);
+        userToUpdate.listings.push(listingID)
+        userToUpdate.save()
       })
       .then(() => {
         res.json(newListing);
@@ -162,14 +161,14 @@ module.exports = function(app, passport) {
 
   // LOGIN ===============================
   app.get("/login", function(req, res) {
-    res.redirect("/sellerProfile");
+    res.redirect("/seller_profile");
   });
 
   // process the login form
   app.post(
     "/login",
     passport.authenticate("local-login", {
-      successRedirect: "/sellerProfile",
+      successRedirect: "/seller_profile",
       failureRedirect: "/signup",
       failureFlash: true
     })
@@ -177,14 +176,14 @@ module.exports = function(app, passport) {
 
   // SIGNUP =================================
   app.get("/signup", function(req, res) {
-    res.redirect("/sellerProfile");
+    res.redirect("/seller_profile");
   });
 
   // process the signup form
   app.post(
     "/signup",
     passport.authenticate("local-signup", {
-      successRedirect: "/sellerProfile",
+      successRedirect: "/seller_profile",
       failureRedirect: "/signup",
       failureFlash: true
     })

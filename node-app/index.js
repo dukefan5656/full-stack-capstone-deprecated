@@ -12,7 +12,6 @@ var session      = require('express-session');
 
 var {DATABASE_URL} = require('./config/database.js');
 var {CLIENT_ORIGIN} = require('./config/server.js');
-console.log(DATABASE_URL);
 
 app.locals.db = mongoose.connect(DATABASE_URL, {
     useNewUrlParser: true
