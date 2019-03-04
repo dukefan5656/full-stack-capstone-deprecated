@@ -98,6 +98,38 @@ export const LOG_IN_FAILURE = ''
 
 export const LOG_IN_REQUEST = ''
 
+const ADD_BID_SUCCESS = 'ADD_BID_SUCCESS';
+const addBidSuccess = (json) => {
+  return { type: ADD_BID_SUCCESS, payload: json.payload }
+}
+
+const ADD_BID_FAILURE = "ADD_BID_FAILURE";
+const addBidFailure = (error) => {
+  return { type: ADD_BID_FAILURE, message: error}
+}
+export const ADD_BID_REQUEST = 'ADD_BID_REQUEST';
+export const addBid = (...args) => dispatch => {
+  dispatch({type: ADD_BID_REQUEST});
+  return fetch('http://localhost:8080/createBid/5c7c1f4aa7132d3728ebee4c', {method: 'POST',headers: {
+    'Content-Type': 'application/json'
+  }, body: JSON.stringify(args)})
+    .then(res => {
+      if(res.headers.get('Content-Type').includes('application/json')){
+        if(res.ok){
+          return res.json();
+        }
+        return res.json().then(json => {
+          throw Error('API: ' + JSON.stringify(json));
+        });
+      }
+      return res.text().then(text => {
+        throw Error('HTTP ' + res.status + ' : ' + text);
+      })
+    })
+    .then(json => dispatch(addBidSuccess(json)))
+    .catch(error => dispatch(addBidFailure(error)))
+};
+
 const ADD_LISTING_SUCCESS = 'ADD_LISTING_SUCCESS';
 const addListingSuccess = (json) => {
   return { type: ADD_LISTING_SUCCESS, payload: json.payload }
@@ -111,7 +143,9 @@ export const ADD_LISTING_REQUEST = 'ADD_LISTING_REQUEST';
 export const addListing = (...args) => dispatch => {
   dispatch({ type: ADD_LISTING_REQUEST });
 
-  return fetch('URL', { method: 'POST', body: JSON.stringify(args)})
+  return fetch('http://localhost:8080/createListing', { method: 'POST', headers: {
+    'Content-Type': 'application/json'
+  }, body: JSON.stringify(args)})
     .then(res => { 
       if(res.headers.get('Content-Type').includes('application/json')){
         if(res.ok){
@@ -119,11 +153,13 @@ export const addListing = (...args) => dispatch => {
         }
 
         return res.json().then(json => {
+          console.log('bad');
           throw Error('API: ' + JSON.stringify(json));
         });
       }
 
       return res.text().then(text => {
+        console.log('worst');
         throw Error('HTTP ' + res.status + ' : ' + text);
       })
     })
@@ -179,7 +215,7 @@ export const getSellerPayload = () => dispatch => {
 export const GET_LISTING_REQUEST = 'GET_LISTING_REQUEST';
 export const getListing = id => dispatch => {
   dispatch({ type: GET_LISTING_REQUEST, id });
-  console.log("fetch request:", id);
+  console.log("fetch request:");
   return fetch(`http://localhost:8080/listing/` + id, {method: 'GET'})
     .then(res => { 
       if(res.headers.get('Content-Type').includes('application/json')){

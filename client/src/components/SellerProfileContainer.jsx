@@ -5,7 +5,7 @@ import SellerMain from "./SellerProfileMainComponent";
 import Navbar from "./NavbarComponent";
 import ListingForm from "./CreateListing";
 import { connect } from 'react-redux';
-import { getSellerPayload } from '.././actions/index';
+import { getSellerPayload, getListing } from '.././actions/index';
 
 export class Seller extends React.Component {
   constructor(props) {
@@ -28,7 +28,7 @@ export class Seller extends React.Component {
 
 
   render() {
-    console.log(this.props.listings);
+    console.log(this.props);
     return (
       <div>
         <Navbar />
@@ -47,7 +47,7 @@ export class Seller extends React.Component {
 
 export default connect(
   state => {
-    const user_id = "5c6f33e44874263ed8818d6e";
+    const user_id = "5c7c1e157f996930d0ba603d";
     // const user_id = state.user.id;
     const userListings = Object.values(state.listing).filter(listing => listing.user === user_id);
     return {
@@ -56,7 +56,8 @@ export default connect(
   },
   dispatch => {
     return {
-     getPayload: () => dispatch(getSellerPayload())
+     getPayload: () => dispatch(getSellerPayload()),
+     getListing: () => dispatch(getListing())
     }
   }
 )(Seller);

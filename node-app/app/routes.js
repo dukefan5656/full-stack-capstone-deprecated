@@ -16,7 +16,7 @@ module.exports = function(app, passport) {
   })
 
   app.get("/seller_profile", isLoggedIn, (req, res, next) => {
-    // console.log(req.session.passport.user);
+    console.log(req.session.passport.user);
     let user = req.session.passport.user;
 
     // let userID = req.user._id;
@@ -41,7 +41,7 @@ module.exports = function(app, passport) {
       .catch(next);
   });
 
-  app.post("/createBid/:id", isLoggedIn, (req, res, next) => {
+  app.post("/createBid/:id", (req, res, next) => {
     for (const param of ["amount"]) {
       if (req.body[param] !== undefined && isNaN(Number(req.body[param]))) {
         return res.redirect("/seller_profile");
@@ -80,7 +80,8 @@ module.exports = function(app, passport) {
       .catch(next);
   });
 
-  app.post("/createListing", (req, res, next) => {
+  app.post("/createListing", isLoggedIn, (req, res, next) => {
+    
     let newListing = {
       headline: req.body.headline,
       address: {
@@ -97,13 +98,15 @@ module.exports = function(app, passport) {
       footage: req.body.footage,
       description: req.body.description
     };
+    console.log('something');
     Listing.create(newListing)
       .then((listing) => {
+        console.log('working');
+
         listingID = listing._id;
         return (newListing = listing);
       })
       .then(listing => {
-        console.log('this is the listing', listing);
         return User.findById(req.session.passport.user)
       })
       .then(userToUpdate => {

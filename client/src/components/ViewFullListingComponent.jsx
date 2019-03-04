@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from 'react-redux';
 import { Link } from "react-router-dom";
-import BidBox from "./BidBoxContainer";
+import BidBoxForm from "./BidForm";
 import Navbar from "./NavbarComponent";
 import { getListing as actionGetListing } from './../actions/index';
 
@@ -30,9 +30,25 @@ export class FullListing extends React.Component {
     return (
       <div>
         <Navbar />
-        <div className="main">
-          <Link to="/seller">Go Back To Profile</Link>
+        <div className="listing-container">
+        <div className="headline-banner">
+        <p>{this.props.listing.headline}</p>
         </div>
+        <div className="listing-image-container">
+          <img src=".././images/condo-1.jpg"/>
+        </div>
+        <div className="listing-info-container">
+        <ul>
+          <li>{this.props.listing.bed}</li>
+          <li>{this.props.listing.bath}</li>
+          <li>{this.props.listing.footage}</li>
+          <li>{this.props.listing.description}</li>
+        </ul>
+        </div>
+        <BidBoxForm />
+        </div>
+          <Link to="/seller">Go Back To Profile</Link>
+        
       </div>
     );
   }
