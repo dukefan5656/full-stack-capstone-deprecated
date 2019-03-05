@@ -1,9 +1,12 @@
 import React from "react";
+import { connect } from 'react-redux';
 import "./styles/search-page-style.css";
 import Navbar from "./NavbarComponent";
 import MiniListing from "./MiniListingContainer";
+import { getListing } from '.././actions/index';
 
-export default class Search extends React.Component {
+
+export class Search extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -21,7 +24,19 @@ export default class Search extends React.Component {
         <form
           onSubmit={event => {
             event.preventDefault();
-            // this.search(this.state.city, this.state.zip, this.state.type, this.state.results);
+            return fetch('http://localhost:8080/listings', {
+              credentials: "include",
+              method: "POST",
+              headers: {
+              "Content-Type": "application/json"
+            },
+              body: JSON.stringify({
+                city: this.state.searchCity,
+                zip: this.state.searchZip,
+                type: this.state.searchType
+              })
+            })
+            .then(response => response.json()).then(listings => this.setState({results: listings}));
           }}
         >
           <div className="form-group">
@@ -70,14 +85,29 @@ export default class Search extends React.Component {
           </button>
         </form>
         {this.state.results.map(result => {
+          console.log(result);
           return <MiniListing {...result} />;
         })}
       </div>
     );
   }
 }
-// export default connect(null, dispatch => {
-//   return {
-//     login: (username, password) => dispatch(logIn(username, password))
-//   }
-// })(Login);
+
+export default connect(
+  // state => {
+  //   console.log(state);
+  //   const listing_id = '5c7e93342f562215884f777b';
+  // //   // const user_id = state.user.id;
+  //   const userListing = state.results.filter(listing => listing.id === listing_id);
+  //   return {
+  //     listings: userListing
+  //   }
+  // },
+  dispatch => {
+    return {
+     getListing: () => dispatch(getListing('5c7e93342f562215884f777b'))
+    }
+  }
+
+)(Search);
+

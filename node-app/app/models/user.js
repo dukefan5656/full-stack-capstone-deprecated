@@ -19,12 +19,10 @@ const userSchema = mongoose.Schema({
 
 const listingSchema = mongoose.Schema ({
     headline: String,
-    address : {
-      street:  String,
-      zip: String,
-      city: String,
-      state: String
-    },
+    street:  String,
+    zip: String,
+    city: String,
+    state: String,
     type: String,
     user: {type: mongoose.Schema.Types.ObjectId,
       ref: "User"

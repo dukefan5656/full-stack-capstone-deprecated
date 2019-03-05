@@ -15,17 +15,37 @@ module.exports = function(app, passport) {
     .catch(next);
   })
 
+  app.post('/listings', (req, res, next) => {
+    let query = {};
+
+    if(req.body.city){
+      query.city = req.body.city;
+    }
+    if(req.body.zip){
+      query.zip = req.body.zip;
+    }
+    if(req.body.type){
+      query.type = req.body.type;
+    }
+    console.log(query);
+    Listing.find(query)
+    .then(listings => {
+      console.log(listings);
+      return res.json(
+        listings
+      )
+    })
+    .catch(next);
+  })
+
   app.get("/seller_profile", isLoggedIn, (req, res, next) => {
-    console.log(req.session.passport.user);
     let user = req.session.passport.user;
 
-    // let userID = req.user._id;
-    //query the user and it will populate
-  User.find({ _id: { $in: /*user.listing*/user } })
+  User.findOne({ _id: { $in: user } })
       .populate("listings")
-      .then(listings => {
+      .then(user => {
         return res.json({
-          user, listings
+          user
         });
       })
       .catch(next);
@@ -57,11 +77,9 @@ module.exports = function(app, passport) {
         return (newBid = bid);
       })
       .then(createdBid => {
-        console.log('this is the bid', newBid)
         return User.findById(req.session.passport.user)
       })
       .then(userToUpdate => {
-        console.log('this is the user', userToUpdate.bids);
         userToUpdate.bids.push(bidID)
         userToUpdate.save()
       })
@@ -84,12 +102,10 @@ module.exports = function(app, passport) {
     
     let newListing = {
       headline: req.body.headline,
-      address: {
-        street: req.body.street,
-        zip: req.body.zip,
-        city: req.body.city,
-        state: req.body.state
-      },
+      street: req.body.street,
+      zip: req.body.zip,
+      city: req.body.city,
+      state: req.body.state,
       bids: [],
       user: req.session.passport.user,
       type: req.body.type,
@@ -98,10 +114,8 @@ module.exports = function(app, passport) {
       footage: req.body.footage,
       description: req.body.description
     };
-    console.log('something');
     Listing.create(newListing)
       .then((listing) => {
-        console.log('working');
 
         listingID = listing._id;
         return (newListing = listing);
@@ -110,7 +124,6 @@ module.exports = function(app, passport) {
         return User.findById(req.session.passport.user)
       })
       .then(userToUpdate => {
-        console.log('this is the user to update', userToUpdate.listings);
         userToUpdate.listings.push(listingID)
         userToUpdate.save()
       })

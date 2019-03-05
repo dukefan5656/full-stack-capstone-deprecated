@@ -32,20 +32,20 @@ module.exports = function (app, passport) {
            
             process.nextTick(function () {
                 User.findOne({ 'local.email': email }, function (err, user) {
-                    
-                    if (err)
+                    if (err){
                         return done(err);
-
+                    }    
                     
-                    if (!user)
+                    if (!user){
                         return done(null, false, req.flash('loginMessage', 'No user found.'));
-
-                    if (!user.validPassword(password))
+                    }
+                    if (!user.validPassword(password)){
                         return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.'));
-
+                    }
                     
-                    else
+                    else {
                         return done(null, user);
+                    }
                 });
             });
 
@@ -67,8 +67,9 @@ module.exports = function (app, passport) {
             process.nextTick(function () {
                 if (!req.user) {
                     User.findOne({ 'local.email': email }, function (err, user) {
-                        if (err)
+                        if (err){
                             return done(err);
+                        }
                         if (user) {                //I changed line 73 from req.flash to console.log
                             return done(null, false, console.log('signupMessage', 'That email is already taken.'));
                         } else {
@@ -78,9 +79,9 @@ module.exports = function (app, passport) {
                             newUser.local.password = newUser.generateHash(password);
                             //newUser.firstName = req.body.firstName
                             newUser.save(function (err) {
-                                if (err)
+                                if (err){
                                     return done(err);
-
+                                }
                                 return done(null, newUser);
                             });
                         }
@@ -88,9 +89,9 @@ module.exports = function (app, passport) {
                     });
                 } else if (!req.user.local.email) {
                     User.findOne({ 'local.email': email }, function (err, user) {
-                        if (err)
+                        if (err){
                             return done(err);
-
+                        }
                         if (user) {
                             return done(null, false, req.flash('loginMessage', 'That email is already taken.'));
                         } else {

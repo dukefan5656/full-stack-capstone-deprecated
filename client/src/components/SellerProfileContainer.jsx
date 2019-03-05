@@ -47,7 +47,8 @@ export class Seller extends React.Component {
 
 export default connect(
   state => {
-    const user_id = "5c7c1e157f996930d0ba603d";
+    console.log(state);
+    const user_id = "5c7cd6f08213440d18efb93b";
     // const user_id = state.user.id;
     const userListings = Object.values(state.listing).filter(listing => listing.user === user_id);
     return {

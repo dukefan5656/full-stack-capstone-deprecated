@@ -1,8 +1,8 @@
 import React from "react";
 import "./signup-style.css";
 import { connect } from "react-redux";
-// import {signUp} from '../actions/index';
-export class Login extends React.Component {
+import { signUp } from "../actions/index";
+export class Signup extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -16,7 +16,8 @@ export class Login extends React.Component {
       <div className="container">
         <div className="col-sm-6 col-sm-offset-3">
           <h1>
-            <span className="fa fa-sign-in" />Sign-up
+            <span className="fa fa-sign-in" />
+            Sign-up
           </h1>
 
           <form

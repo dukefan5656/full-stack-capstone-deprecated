@@ -31,7 +31,8 @@ if (process.env.NODE_ENV !== 'testing'){
 
 app.use(cookieParser());
 app.use(cors({
-    origin: CLIENT_ORIGIN
+    origin: CLIENT_ORIGIN,
+    credentials: true
 }));
 // changed bodyParser.json to express.json
 app.use(express.json());
