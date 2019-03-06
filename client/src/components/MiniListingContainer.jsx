@@ -1,13 +1,11 @@
 import React from "react";
-import Navbar from "./NavbarComponent";
-import { connect } from 'react-redux';
+import { Link } from "react-router-dom";
 import "./styles/mini-listing.css";
-import { getListing } from '.././actions/index';
 
 export default function MiniListing(props) {
-  console.log(props);
+  let endpoint = "/listing/"+props._id;
   return (
-    
+    <Link to={endpoint}>
     <div className="mini-listing-container">
       <div className="image-container">
         <img alt="loading" src={props.image} />
@@ -27,6 +25,7 @@ export default function MiniListing(props) {
         </ul>
       </div>
     </div>
+    </Link>
   );
 }
 

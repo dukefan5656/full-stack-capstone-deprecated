@@ -6,7 +6,7 @@ import MiniListing from "./MiniListingContainer";
 import { getListing } from '.././actions/index';
 
 
-export class Search extends React.Component {
+export default class Search extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -86,28 +86,30 @@ export class Search extends React.Component {
         </form>
         {this.state.results.map(result => {
           console.log(result);
-          return <MiniListing {...result} />;
+          return <MiniListing {...result} 
+          // onClick={id => history.push('/listing/' + id)}
+          />;
         })}
       </div>
     );
   }
 }
 
-export default connect(
-  // state => {
-  //   console.log(state);
-  //   const listing_id = '5c7e93342f562215884f777b';
-  // //   // const user_id = state.user.id;
-  //   const userListing = state.results.filter(listing => listing.id === listing_id);
-  //   return {
-  //     listings: userListing
-  //   }
-  // },
-  dispatch => {
-    return {
-     getListing: () => dispatch(getListing('5c7e93342f562215884f777b'))
-    }
-  }
+// export default connect(
+//   // state => {
+//   //   console.log(state);
+//   //   const listing_id = '5c7e93342f562215884f777b';
+//   // //   // const user_id = state.user.id;
+//   //   const userListing = state.results.filter(listing => listing.id === listing_id);
+//   //   return {
+//   //     listings: userListing
+//   //   }
+//   // },
+//   dispatch => {
+//     return {
+//      getListing: () => dispatch(getListing('5c7e93342f562215884f777b'))
+//     }
+//   }
 
-)(Search);
+// )(Search);
 

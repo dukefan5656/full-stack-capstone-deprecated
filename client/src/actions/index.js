@@ -257,4 +257,45 @@ export const getListing = id => dispatch => {
     })
     .then(json => dispatch(getListingSuccess(json)))
     .catch(error => dispatch(getListingFailure(error)));
+    // history.push("/seller-profile");
 };
+
+
+const DELETE_LISTING_SUCCESS = "DELETE_LISTING_SUCCESS";
+const deleteListingSuccess = json => {
+  return {
+    type: DELETE_LISTING_SUCCESS,
+    payload: { id: json._id }
+  };
+};
+
+const GET_SELLER_PAYLOAD_FAILURE = "GET_SELLER_PAYLOAD_FAILURE";
+const getSellerPayloadFailure = error => {
+  return { type: GET_SELLER_PAYLOAD_FAILURE, message: error };
+};
+
+export const DELETE_LISTING_REQUEST = "DELETE_LISTING_REQUEST";
+export const deleteListing = id => dispatch => {
+  dispatch({type: DELETE_LISTING_REQUEST, id});
+  return fetch(`http://localhost:8080/delete_listing` + id, {
+    method: "DELETE",
+    credentials: "include"
+  })
+  .then(res => {
+    if (res.headers.get("Content-Type").includes("application/json")) {
+      if (res.ok) {
+        return res.redirect('http://localhost:8080/seller_profile');
+      }
+
+      return res.json().then(json => {
+        throw Error("API: " + JSON.stringify(json));
+      });
+    }
+
+    return res.text().then(text => {
+      throw Error("HTTP " + res.status + " : " + text);
+    });
+  })
+  .then(json => dispatch(deleteListingSuccess(json)))
+  .catch(error => dispatch(deleteListingFailure(error)));
+}
