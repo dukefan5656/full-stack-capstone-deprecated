@@ -1,11 +1,11 @@
 import React from "react";
-import ReceivedBids from "./SellerBidsComponent";
+import BidBox from "./BidBoxContainer";
 import MiniSellerListings from "./MiniSellerListingsComponent";
 import SellerMain from "./SellerProfileMainComponent";
 import Navbar from "./NavbarComponent";
 import ListingForm from "./CreateListing";
 import { connect } from 'react-redux';
-import { getSellerPayload, getListing } from '.././actions/index';
+import { getSellerPayload, getListing, addListing } from '.././actions/index';
 
 export class Seller extends React.Component {
   constructor(props) {
@@ -13,7 +13,7 @@ export class Seller extends React.Component {
 
     this.state = {
       editing: false,
-      bids: [{ amount: 5000, agent: "Chris Rudder" }],
+      bids: [],
       listings: []
     };
   }
@@ -32,10 +32,10 @@ export class Seller extends React.Component {
     return (
       <div>
         <Navbar />
-        {this.state.bids.map(bid => {
-          return <ReceivedBids {...bid} />;
-        })}
-        {this.state.listings.map(listing => {
+        
+          <BidBox bids={this.props.bids} />
+        
+        {this.props.listings.map(listing => {
           return <MiniSellerListings {...listing} />;
         })}
         <SellerMain />
@@ -48,17 +48,18 @@ export class Seller extends React.Component {
 export default connect(
   state => {
     console.log(state);
-    const user_id = "5c7cd6f08213440d18efb93b";
-    // const user_id = state.user.id;
+    const user_id = state.user.user;
     const userListings = Object.values(state.listing).filter(listing => listing.user === user_id);
     return {
-      listings: userListings
+      listings: userListings,
+      bids: []
     }
   },
   dispatch => {
     return {
      getPayload: () => dispatch(getSellerPayload()),
-     getListing: () => dispatch(getListing())
+     getListing: () => dispatch(getListing()),
+     addListing: () => dispatch(addListing())
     }
   }
 )(Seller);

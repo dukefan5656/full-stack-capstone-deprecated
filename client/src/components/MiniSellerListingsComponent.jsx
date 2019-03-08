@@ -11,7 +11,7 @@ export default function MiniSellerListings(props) {
           <li>
             <img src={props.image} />
           </li>
-          <li>{props.timeRemaining}</li>
+          <li>{props.headline}</li>
         </ul>
       </div>
     </div>

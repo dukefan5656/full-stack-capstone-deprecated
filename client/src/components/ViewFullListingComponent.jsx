@@ -2,8 +2,10 @@ import React from "react";
 import { connect } from 'react-redux';
 import { Link } from "react-router-dom";
 import BidBoxForm from "./BidForm";
+import BidBox from "./BidBoxContainer";
 import Navbar from "./NavbarComponent";
-import { getListing as actionGetListing } from './../actions/index';
+import DeleteBox from './deleteWarning';
+import { getListing, deleteListing } from './../actions/index';
 
 export class FullListing extends React.Component {
   constructor(props) {
@@ -11,13 +13,14 @@ export class FullListing extends React.Component {
     this.state = {
       loading: true
     };
+    
+
   }
 
   componentDidMount(){
     return this.props.getListing(this.props.match.params.id)
       .then(() => this.setState({ loading: false }));
   }
-
   render() {
     if (this.state.loading){
       return <h1>Loading</h1>;
@@ -26,7 +29,6 @@ export class FullListing extends React.Component {
     if (this.props.listing === undefined){
       return <h1>Listing does not exist</h1>
     }
-    console.log(this.props.listing);
     return (
       <div>
         <Navbar />
@@ -45,15 +47,16 @@ export class FullListing extends React.Component {
           <li>{this.props.listing.description}</li>
         </ul>
         </div>
-        <BidBoxForm />
+        <BidBox bids={this.props.listing.bids} />
+        <BidBoxForm listingId={this.props.match.params.id} />
         </div>
           <Link to="/seller">Go Back To Profile</Link>
-        
+        <DeleteBox deleteListing={this.props.deleteListing} listingId={this.props.match.params.id} />
       </div>
     );
   }
 }
-
+//refactor getListing and deleteListing for mapDispatchToProps
 export default connect(
   (state, props) => {
     const id = props.match.params.id;
@@ -63,7 +66,8 @@ export default connect(
   },
   dispatch => {
     return {
-      getListing: id => dispatch(actionGetListing(id))
+      getListing: id => dispatch(getListing(id)),
+      deleteListing: id => dispatch(deleteListing(id))
     }
   }
 )(FullListing);

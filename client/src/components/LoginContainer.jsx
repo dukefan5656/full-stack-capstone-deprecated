@@ -67,7 +67,7 @@ export default connect(
   null,
   dispatch => {
     return {
-      login: (username, password) => dispatch(logIn(username, password))
+      login: (email, password) => dispatch(logIn(email, password))
     };
   }
 )(Login);

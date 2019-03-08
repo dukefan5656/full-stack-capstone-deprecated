@@ -9,11 +9,9 @@ export class ListingForm extends React.Component {
     this.state = {
       images: [],
       headline: "",
-      address: {
-        street: "",
-        zip: "",
-        city: ""
-      },
+      street: "",
+      zip: "",
+      city: "",
       type: "",
       bed: 0,
       bath: 0,
@@ -27,19 +25,7 @@ export class ListingForm extends React.Component {
         onSubmit={event => {
           event.preventDefault();
           this.props.addListing(this.state);
-          /*
-          this.props.listing(
-            this.state.images,
-            this.state.headline,
-            this.state.address,
-            this.state.type,
-            this.state.bed,
-            this.state.bath,
-            this.state.footage,
-            this.state.description
-          );
-          this.props.addListing(this.state);
-          */
+          console.log(this.state)          
         }}
       >
         <div className="form-group">
@@ -56,12 +42,9 @@ export class ListingForm extends React.Component {
           <label>Street</label>
           <input
             type="text"
-            value={this.state.address.street}
+            value={this.state.street}
             onChange={event =>
-              this.setState({
-                address: { ...this.state.address, street: event.target.value }
-              })
-            }
+              this.setState( { street: event.target.value })}
             className="form-control"
             name="street"
           />
@@ -70,12 +53,9 @@ export class ListingForm extends React.Component {
           <label>Zipcode</label>
           <input
             type="text"
-            value={this.state.address.zip}
+            value={this.state.zip}
             onChange={event =>
-              this.setState({
-                address: { ...this.state.address, zip: event.target.value }
-              })
-            }
+              this.setState({zip: event.target.value })}             
             className="form-control"
             name="zip"
           />
@@ -84,12 +64,9 @@ export class ListingForm extends React.Component {
           <label>city</label>
           <input
             type="text"
-            value={this.state.address.city}
+            value={this.state.city}
             onChange={event =>
-              this.setState({
-                address: { ...this.state.address, city: event.target.value }
-              })
-            }
+              this.setState({city: event.target.value })}
             className="form-control"
             name="city"
           />
@@ -179,5 +156,5 @@ export class ListingForm extends React.Component {
 
 export default connect(
   null,
-  dispatch => ({ addListing: (...args) => dispatch(addListing(...args))})
+  dispatch => ({ addListing: (args) => dispatch(addListing(args))})
 )(ListingForm);

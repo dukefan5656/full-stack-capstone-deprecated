@@ -103,6 +103,7 @@ export const LOG_IN_REQUEST = "LOG_IN_REQUEST";
 
 const ADD_BID_SUCCESS = "ADD_BID_SUCCESS";
 const addBidSuccess = json => {
+  console.log('reaching',json);
   return { type: ADD_BID_SUCCESS, payload: json.payload };
 };
 
@@ -111,15 +112,16 @@ const addBidFailure = error => {
   return { type: ADD_BID_FAILURE, message: error };
 };
 export const ADD_BID_REQUEST = "ADD_BID_REQUEST";
-export const addBid = (...args) => dispatch => {
+export const addBid = (amount, id) => dispatch => {
+console.log(amount, id);
   dispatch({ type: ADD_BID_REQUEST });
-  return fetch("http://localhost:8080/createBid/5c7c1f4aa7132d3728ebee4c", {
+  return fetch("http://localhost:8080/createBid/"+id, {
     method: "POST",
     credentials: "include",
     headers: {
       "Content-Type": "application/json"
     },
-    body: JSON.stringify(args)
+    body: JSON.stringify({amount})
   })
     .then(res => {
       if (res.headers.get("Content-Type").includes("application/json")) {
@@ -140,7 +142,8 @@ export const addBid = (...args) => dispatch => {
 
 const ADD_LISTING_SUCCESS = "ADD_LISTING_SUCCESS";
 const addListingSuccess = json => {
-  return { type: ADD_LISTING_SUCCESS, payload: json.payload };
+  console.log(json);
+  return { type: ADD_LISTING_SUCCESS, payload: json };
 };
 
 const ADD_LISTING_FAILURE = "ADD_LISTING_FAILURE";
@@ -148,7 +151,7 @@ const addListingFailure = error => {
   return { type: ADD_LISTING_FAILURE, message: error };
 };
 export const ADD_LISTING_REQUEST = "ADD_LISTING_REQUEST";
-export const addListing = (...args) => dispatch => {
+export const addListing = (args) => dispatch => {
   dispatch({ type: ADD_LISTING_REQUEST });
 
   return (
@@ -195,9 +198,10 @@ const getListingFailure = error => {
 
 const GET_SELLER_PAYLOAD_SUCCESS = "GET_SELLER_PAYLOAD_SUCCESS";
 const getSellerPayloadSuccess = json => {
+  console.log(json);
   return {
     type: GET_SELLER_PAYLOAD_SUCCESS,
-    payload: { user: json.user, listings: json.listings }
+    payload: { user: json.user, listings: json.user.listings }
   };
 };
 
@@ -257,45 +261,34 @@ export const getListing = id => dispatch => {
     })
     .then(json => dispatch(getListingSuccess(json)))
     .catch(error => dispatch(getListingFailure(error)));
-    // history.push("/seller-profile");
+  // history.push("/seller-profile");
 };
 
-
 const DELETE_LISTING_SUCCESS = "DELETE_LISTING_SUCCESS";
-const deleteListingSuccess = json => {
+const deleteListingSuccess = id => {
   return {
     type: DELETE_LISTING_SUCCESS,
-    payload: { id: json._id }
+    id
   };
 };
 
-const GET_SELLER_PAYLOAD_FAILURE = "GET_SELLER_PAYLOAD_FAILURE";
-const getSellerPayloadFailure = error => {
-  return { type: GET_SELLER_PAYLOAD_FAILURE, message: error };
+const DELETE_LISTING_FAILURE = "DELETE_LISTING_FAILURE";
+const deleteListingFailure = error => {
+  return { type: DELETE_LISTING_FAILURE, message: error };
 };
 
 export const DELETE_LISTING_REQUEST = "DELETE_LISTING_REQUEST";
 export const deleteListing = id => dispatch => {
-  dispatch({type: DELETE_LISTING_REQUEST, id});
-  return fetch(`http://localhost:8080/delete_listing` + id, {
+  dispatch({ type: DELETE_LISTING_REQUEST, id });
+  return fetch(`http://localhost:8080/listings/${id}`, {
     method: "DELETE",
     credentials: "include"
   })
-  .then(res => {
-    if (res.headers.get("Content-Type").includes("application/json")) {
+    .then(res => {
       if (res.ok) {
-        return res.redirect('http://localhost:8080/seller_profile');
+        return res.json();
       }
-
-      return res.json().then(json => {
-        throw Error("API: " + JSON.stringify(json));
-      });
-    }
-
-    return res.text().then(text => {
-      throw Error("HTTP " + res.status + " : " + text);
-    });
-  })
-  .then(json => dispatch(deleteListingSuccess(json)))
-  .catch(error => dispatch(deleteListingFailure(error)));
-}
+    })
+    .then(json => dispatch(deleteListingSuccess(json.id)))
+    .catch(error => dispatch(deleteListingFailure(error)));
+};

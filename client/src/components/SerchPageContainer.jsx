@@ -87,7 +87,6 @@ export default class Search extends React.Component {
         {this.state.results.map(result => {
           console.log(result);
           return <MiniListing {...result} 
-          // onClick={id => history.push('/listing/' + id)}
           />;
         })}
       </div>

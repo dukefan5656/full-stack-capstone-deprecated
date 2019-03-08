@@ -1,10 +1,11 @@
 import {createStore, combineReducers, applyMiddleware } from 'redux';
-import {listingReducer} from './reducers/index';
+import {listingReducer, loginReducer, } from './reducers/index';
 import Thunk from 'redux-thunk';
 import {composeWithDevTools} from 'redux-devtools-extension';
 
 const rootReducer = combineReducers({
-  listing: listingReducer
+  listing: listingReducer,
+  user: loginReducer
 
 })
 

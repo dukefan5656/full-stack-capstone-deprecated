@@ -15,7 +15,7 @@ export class BidBoxForm extends React.Component{
       <form
             onSubmit={event => {
               event.preventDefault();
-              this.props.bid(this.state.amount);
+              this.props.bid(this.state.amount, this.props.listingId);
             }}
           >
             <div className="form-group">
@@ -41,7 +41,7 @@ export default connect(
   null,
   dispatch => {
     return {
-      bid: (amount) => dispatch(addBid(amount)
+      bid: (amount, id) => dispatch(addBid(amount, id)
       )};
   }
 )(BidBoxForm);

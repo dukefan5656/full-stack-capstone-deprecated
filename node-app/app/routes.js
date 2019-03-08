@@ -6,14 +6,17 @@ module.exports = function(app, passport) {
   });
 
   app.get('/listing/:id', (req, res, next) => {
-    Listing.findOne({_id: {$in: req.params.id}})
-    .populate("listing")
+    Listing.findById(req.params.id)
+    .populate({path: "bids",
+               populate: {path: "user", select: "local"}})
     .then(listing => {
       console.log(listing);
       return res.json({listing})
     })
     .catch(next);
   })
+
+
 
   app.post('/listings', (req, res, next) => {
     let query = {};
@@ -44,6 +47,7 @@ module.exports = function(app, passport) {
   User.findOne({ _id: { $in: user } })
       .populate("listings")
       .then(user => {
+        console.log(user);
         return res.json({
           user
         });
@@ -67,39 +71,61 @@ module.exports = function(app, passport) {
         return res.redirect("/seller_profile");
       }
     }
-    let listingID = req.params.id;
     let newBid = {
-      amount: req.body.amount
+      amount: req.body.amount,
+      listing: req.params.id,
+      user: req.user._id
     };
+    console.log(newBid);
     Bid.create(newBid)
       .then(bid => {
-        bidID = bid._id;
-        return (newBid = bid);
-      })
-      .then(createdBid => {
+        newBid = bid;   
         return User.findById(req.session.passport.user)
       })
       .then(userToUpdate => {
-        userToUpdate.bids.push(bidID)
+        userToUpdate.bids.push(newBid._id);
         userToUpdate.save()
+      return Listing.findById(newBid.listing)
+      })
+      .then(listingToUpdate => {
+        listingToUpdate.bids.push(newBid._id);
+        listingToUpdate.save()
       })
       .then(() => {
-        res.json(newBid)
+        return res.json(newBid)
       })
       .catch(next);
       });
 
-  app.delete("/deleteListing/:id", isLoggedIn, (req, res, next) => {
+  app.delete("/listings/:id", isLoggedIn, (req, res, next) => {
     let id = req.params.id;
+    console.log(req.params);
     Listing.findByIdAndRemove(id)
       .then(() => {
-        res.redirect("/seller_profile");
+    User.update({$pull: {listings : {$in:[id]}}})
+      .then(() => {
+        res.json();
+      })
+        
+      })
+      .catch(next);
+  });
+
+  app.delete("/bids/:id", isLoggedIn, (req, res, next) => {
+    let id = req.params.id;
+    console.log(req.params);
+    Bid.findByIdAndRemove(id)
+      .then(() => {
+    User.update({$pull: {bids : {$in:[id]}}})
+      .then(() => {
+        res.json();
+      })
+        
       })
       .catch(next);
   });
 
   app.post("/createListing", isLoggedIn, (req, res, next) => {
-    
     let newListing = {
       headline: req.body.headline,
       street: req.body.street,
@@ -116,19 +142,13 @@ module.exports = function(app, passport) {
     };
     Listing.create(newListing)
       .then((listing) => {
-
-        listingID = listing._id;
-        return (newListing = listing);
-      })
-      .then(listing => {
+        newListing = listing;
         return User.findById(req.session.passport.user)
       })
       .then(userToUpdate => {
-        userToUpdate.listings.push(listingID)
+        userToUpdate.listings.push(newListing._id)
         userToUpdate.save()
-      })
-      .then(() => {
-        res.json(newListing);
+        return res.json(newListing);
       })
       .catch(next);
   });

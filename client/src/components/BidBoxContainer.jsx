@@ -18,14 +18,15 @@ export default class BidBox extends React.Component {
   }
 
   render() {
-    const cards = this.state.bids.map((bid, index) => (
+    console.log(this.props.bids[0]);
+    const cards = this.props.bids.map((bid, index) => (
       <React.Fragment>
         <div className="image-container">
           <img src={bid.image} alt="loading" />
         </div>
         <div className="bid-box-description-container">
           <ul className="bid-box-description">
-            <li key={index}>{bid.seller}</li>
+            <li key={index}>{bid.user.local.email}</li>
             <li key={index}>{bid.amount}</li>
           </ul>
         </div>
