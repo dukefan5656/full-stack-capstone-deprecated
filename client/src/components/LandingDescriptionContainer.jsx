@@ -13,7 +13,7 @@ export default function LandingDescription() {
       <div class="features-container">
         <div class="features-child">
           <div>
-            <img src="./images/collaboration.png" />
+            <img src="../images/collaboration.png" />
             <span>
               <p>LIST YOUR PROPERTY</p>
               <p>Whether you are selling your house, land, or commercial space, you can list with the confidence that you are in control and will get the best possible price for your listing.</p>

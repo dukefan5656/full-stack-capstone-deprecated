@@ -1,0 +1,15 @@
+.main{
+  background-image: url("./images/neighborhood.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+
+}
+html, body, #root, #root>div {
+  height: 100%;
+}
+
+p{ 
+  color: white;
+  font-weight: bold;
+}
+

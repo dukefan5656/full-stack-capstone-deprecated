@@ -50,6 +50,8 @@ export default connect(
     console.log(state);
     const user_id = state.user.user;
     const userListings = Object.values(state.listing).filter(listing => listing.user === user_id);
+    const sellerBids = userListings.map(listing => listing.bids);
+    
     return {
       listings: userListings,
       bids: []

@@ -4,9 +4,9 @@ import './styles/navbar-style.css';
 export default function Navbar() {
     return (
         <div className="navbar-container">
-        <banner className="navbar">
+        <div className="navbar">
             <h1>Some Site Name in component</h1>
-        </banner>
+        </div>
         <button>
           Logout
         </button>

@@ -42,6 +42,7 @@ module.exports = function(app, passport) {
   })
 
   app.get("/seller_profile", isLoggedIn, (req, res, next) => {
+    console.log("inside seller route");
     let user = req.session.passport.user;
 
   User.findOne({ _id: { $in: user } })

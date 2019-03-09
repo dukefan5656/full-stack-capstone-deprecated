@@ -82,6 +82,7 @@ module.exports = function (app, passport) {
                                 if (err){
                                     return done(err);
                                 }
+                                console.log('entered new user');
                                 return done(null, newUser);
                             });
                         }

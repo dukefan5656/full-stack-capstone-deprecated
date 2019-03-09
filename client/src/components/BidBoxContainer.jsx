@@ -18,7 +18,7 @@ export default class BidBox extends React.Component {
   }
 
   render() {
-    console.log(this.props.bids[0]);
+    console.log(this.props.bids);
     const cards = this.props.bids.map((bid, index) => (
       <React.Fragment>
         <div className="image-container">
@@ -32,6 +32,7 @@ export default class BidBox extends React.Component {
         </div>
       </React.Fragment>
     ));
-    return <div className="bid-box-container">{cards}</div>;
+    return <div className="bid-box-container"><div><p>Current bids for this listing</p></div>
+    {cards}</div>;
   }
 }

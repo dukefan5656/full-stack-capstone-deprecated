@@ -24,7 +24,7 @@ export const messageReducer = (state = null, action) => {
 
 //not sure if action.payload._id should be in an array, consider editing if errors
 export const bidReducer = (state = {}, action) => {
-  console.log("this is the bidReducer", action.payload.listing._id);
+  
   switch(action.type) {
     case "ADD_BID_SUCCESS":
     return {...state, [action.payload._id]: action.payload};
@@ -45,7 +45,6 @@ export const listingReducer = (state = {}, action) => {
       newState[action.payload.id] = action;
       return newState;
       */
-     console.log(action);
       return { ...state, [action.payload._id]: action.payload };
       break;
     case 'GET_LISTING_SUCCESS':

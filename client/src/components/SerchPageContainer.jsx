@@ -85,7 +85,6 @@ export default class Search extends React.Component {
           </button>
         </form>
         {this.state.results.map(result => {
-          console.log(result);
           return <MiniListing {...result} 
           />;
         })}
@@ -96,7 +95,6 @@ export default class Search extends React.Component {
 
 // export default connect(
 //   // state => {
-//   //   console.log(state);
 //   //   const listing_id = '5c7e93342f562215884f777b';
 //   // //   // const user_id = state.user.id;
 //   //   const userListing = state.results.filter(listing => listing.id === listing_id);

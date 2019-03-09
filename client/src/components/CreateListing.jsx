@@ -25,7 +25,6 @@ export class ListingForm extends React.Component {
         onSubmit={event => {
           event.preventDefault();
           this.props.addListing(this.state);
-          console.log(this.state)          
         }}
       >
         <div className="form-group">

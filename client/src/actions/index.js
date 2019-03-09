@@ -40,10 +40,8 @@ export const signUp = (email, password, type) => {
 
 export const LOG_IN_SUCCESS = "LOG_IN_SUCCESS";
 export const logIn = (email, password) => {
-  console.log(email, password);
   return dispatch => {
     dispatch({ type: LOG_IN_REQUEST, email });
-    console.log("test");
     return fetch(`http://localhost:8080/login`, {
       credentials: "include",
       method: "POST",
@@ -56,7 +54,6 @@ export const logIn = (email, password) => {
       })
     })
       .then(res => {
-        console.log(res);
         if (res.url === "http://localhost:8080/seller_profile") {
           return res.json();
         } else {
@@ -198,7 +195,6 @@ const getListingFailure = error => {
 
 const GET_SELLER_PAYLOAD_SUCCESS = "GET_SELLER_PAYLOAD_SUCCESS";
 const getSellerPayloadSuccess = json => {
-  console.log(json);
   return {
     type: GET_SELLER_PAYLOAD_SUCCESS,
     payload: { user: json.user, listings: json.user.listings }
@@ -212,9 +208,10 @@ const getSellerPayloadFailure = error => {
 
 const GET_SELLER_PAYLOAD_REQUEST = "GET_SELLER_PAYLOAD_REQUEST";
 export const getSellerPayload = () => dispatch => {
+  console.log("GET_SELLER_PAYLOAD");
   dispatch({ type: GET_SELLER_PAYLOAD_REQUEST });
 
-  return fetch(`http://localhost:8080/seller_profile/`, {
+  return fetch(`http://localhost:8080/seller_profile`, {
     method: "GET",
     credentials: "include"
   })
