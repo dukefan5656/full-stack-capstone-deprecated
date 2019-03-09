@@ -47,7 +47,12 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session()); 
 app.use(flash()); 
-
+// app.use(function(req, res, next){
+//     console.log(req.session);
+//     console.log(req.session.id);
+//     console.log(req.user);
+//     next();
+// })
 // routes ======================================================================
 require('./app/routes.js')(app, passport); 
 

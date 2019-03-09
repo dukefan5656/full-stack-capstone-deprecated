@@ -17,7 +17,11 @@ export default class BidBox extends React.Component {
     };
   }
 
+  
+
   render() {
+
+  
     console.log(this.props.bids);
     const cards = this.props.bids.map((bid, index) => (
       <React.Fragment>
@@ -29,6 +33,10 @@ export default class BidBox extends React.Component {
             <li key={index}>{bid.user.local.email}</li>
             <li key={index}>{bid.amount}</li>
           </ul>
+        </div>
+        <div className="buttons-container">
+          <button>Accept Bid</button>
+          <button>Reject Bid</button>
         </div>
       </React.Fragment>
     ));

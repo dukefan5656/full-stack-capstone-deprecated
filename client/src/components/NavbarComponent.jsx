@@ -1,15 +1,17 @@
 import React from 'react'; 
+import {Link} from 'react-router-dom';
 import './styles/navbar-style.css';
 
 export default function Navbar() {
     return (
         <div className="navbar-container">
         <div className="navbar">
-            <h1>Some Site Name in component</h1>
+            <h1>Your Move</h1>
         </div>
-        <button>
+        <Link to="/logout"><button>
           Logout
         </button>
+        </Link>
         </div>
     );
 }

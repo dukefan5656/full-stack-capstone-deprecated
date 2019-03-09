@@ -29,7 +29,7 @@ export class Login extends React.Component {
               <label>Email</label>
               <input
                 type="text"
-                value="dukefan5656@gmail.com"
+                value={this.state.email}
                 onChange={event => this.setState({ email: event.target.value })}
                 className="form-control"
                 name="email"
@@ -39,7 +39,7 @@ export class Login extends React.Component {
               <label>Password</label>
               <input
                 type="password"
-                value="devils88"
+                value={this.state.password}
                 onChange={event =>
                   this.setState({ password: event.target.value })
                 }

@@ -46,7 +46,8 @@ module.exports = function(app, passport) {
     let user = req.session.passport.user;
 
   User.findOne({ _id: { $in: user } })
-      .populate("listings")
+    .populate({path: "listings",
+    populate: {path: "bids", populate: { path: 'user' }}})
       .then(user => {
         console.log(user);
         return res.json({

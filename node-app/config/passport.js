@@ -26,6 +26,7 @@ module.exports = function (app, passport) {
         passReqToCallback: true 
     },
         function (req, email, password, done) {
+            req.logout();
             if (email)
                 email = email.toLowerCase(); 
 
@@ -60,6 +61,7 @@ module.exports = function (app, passport) {
         passReqToCallback: true 
     },
         function (req, email, password, done) {
+            req.logout();
             if (email)
                 email = email.toLowerCase(); 
 

@@ -50,11 +50,12 @@ export default connect(
     console.log(state);
     const user_id = state.user.user;
     const userListings = Object.values(state.listing).filter(listing => listing.user === user_id);
-    const sellerBids = userListings.map(listing => listing.bids);
-    
+    //const sellerBids = userListings.map(listing => listing.bids);
+    const sellerBids = userListings.reduce((bids, listing) => ([...bids, ...listing.bids]), []);
+    console.log(sellerBids);
     return {
       listings: userListings,
-      bids: []
+      bids: sellerBids
     }
   },
   dispatch => {
