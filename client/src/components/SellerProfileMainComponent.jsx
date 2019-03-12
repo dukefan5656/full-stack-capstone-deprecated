@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom'
 import "./styles/seller-main-style.css";
 
 export default function SellerMain(props) {
-  console.log(props.listings);
+  
   return (
     <div className="main-container">
       <div className="header">

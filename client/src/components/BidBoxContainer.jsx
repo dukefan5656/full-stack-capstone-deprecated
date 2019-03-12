@@ -1,46 +1,73 @@
 import React from "react";
+import { connect } from "react-redux";
 import "./styles/bid-box-style.css";
-
-export default class BidBox extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      bids: [
-        {
-          image: "../../images/condo-1.jpg",
-          seller: "",
-          amount: 0,
-          status: ""
-        }
-      ]
-    };
-  }
-
-  
-
+import { updateBid } from ".././actions/index";
+export class BidBox extends React.Component {
   render() {
-
-  
-    console.log(this.props.bids);
-    const cards = this.props.bids.map((bid, index) => (
-      <React.Fragment>
-        <div className="image-container">
-          <img src={bid.image} alt="loading" />
+    if (
+      this.props.userId === this.props.user._id ||
+      this.props.userId === this.props.listing.user._id
+    ) {
+      return (
+        <div className="bid-box-container">
+          <div>
+            <p>Current bids for this listing</p>
+          </div>
+          <React.Fragment>
+            <div className="image-container">
+              <img src="" alt="loading" />
+            </div>
+            <div className="bid-box-description-container">
+              <ul className="bid-box-description">
+                <li>{this.props.user.local.email}</li>
+                <li>{this.props.amount}</li>
+                <li>{this.props.status}</li>
+              </ul>
+            </div>
+            {/*react conditional rendering*/}
+            {this.props.userId === this.props.listing.user._id && (
+              <div className="buttons-container">
+                <button
+                  type="button"
+                  value="rejected"
+                  name="rejected"
+                  onClick={event => {
+                    this.props.updateBid(this.props._id, event.target.value);
+                  }}
+                >
+                  Reject
+                </button>
+                <button
+                  type="button"
+                  value="accepted"
+                  name="accepted"
+                  onClick={event => {
+                    this.props.updateBid(this.props._id, event.target.value);
+                  }}
+                >
+                  Accept
+                </button>
+              </div>
+            )}
+          </React.Fragment>
         </div>
-        <div className="bid-box-description-container">
-          <ul className="bid-box-description">
-            <li key={index}>{bid.user.local.email}</li>
-            <li key={index}>{bid.amount}</li>
-          </ul>
-        </div>
-        <div className="buttons-container">
-          <button>Accept Bid</button>
-          <button>Reject Bid</button>
-        </div>
-      </React.Fragment>
-    ));
-    return <div className="bid-box-container"><div><p>Current bids for this listing</p></div>
-    {cards}</div>;
+      );
+    } else {
+      return null;
+    }
   }
 }
+//todo add delete bid
+export default connect(
+  (state) => {
+    const user_id = state.currentUser.user;
+    return {
+      userId: user_id
+    };
+  },
+  dispatch => {
+    return {
+      updateBid: (id, status) => dispatch(updateBid(id, status))
+    };
+  }
+)(BidBox);

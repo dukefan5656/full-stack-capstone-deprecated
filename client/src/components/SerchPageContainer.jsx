@@ -1,10 +1,7 @@
 import React from "react";
-import { connect } from 'react-redux';
 import "./styles/search-page-style.css";
 import Navbar from "./NavbarComponent";
 import MiniListing from "./MiniListingContainer";
-import { getListing } from '.././actions/index';
-
 
 export default class Search extends React.Component {
   constructor(props) {
@@ -24,19 +21,20 @@ export default class Search extends React.Component {
         <form
           onSubmit={event => {
             event.preventDefault();
-            return fetch('http://localhost:8080/listings', {
+            return fetch("http://localhost:8080/listings", {
               credentials: "include",
               method: "POST",
               headers: {
-              "Content-Type": "application/json"
-            },
+                "Content-Type": "application/json"
+              },
               body: JSON.stringify({
                 city: this.state.searchCity,
                 zip: this.state.searchZip,
                 type: this.state.searchType
               })
             })
-            .then(response => response.json()).then(listings => this.setState({results: listings}));
+              .then(response => response.json())
+              .then(listings => this.setState({ results: listings }));
           }}
         >
           <div className="form-group">
@@ -85,28 +83,9 @@ export default class Search extends React.Component {
           </button>
         </form>
         {this.state.results.map(result => {
-          return <MiniListing {...result} 
-          />;
+          return <MiniListing {...result} />;
         })}
       </div>
     );
   }
 }
-
-// export default connect(
-//   // state => {
-//   //   const listing_id = '5c7e93342f562215884f777b';
-//   // //   // const user_id = state.user.id;
-//   //   const userListing = state.results.filter(listing => listing.id === listing_id);
-//   //   return {
-//   //     listings: userListing
-//   //   }
-//   // },
-//   dispatch => {
-//     return {
-//      getListing: () => dispatch(getListing('5c7e93342f562215884f777b'))
-//     }
-//   }
-
-// )(Search);
-

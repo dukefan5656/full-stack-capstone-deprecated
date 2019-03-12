@@ -1,7 +1,6 @@
 import React from "react";
-import { connect } from 'react-redux';
-import {addListing} from '../actions/index'
-
+import { connect } from "react-redux";
+import { addListing } from "../actions/index";
 
 export class ListingForm extends React.Component {
   constructor(props) {
@@ -42,8 +41,7 @@ export class ListingForm extends React.Component {
           <input
             type="text"
             value={this.state.street}
-            onChange={event =>
-              this.setState( { street: event.target.value })}
+            onChange={event => this.setState({ street: event.target.value })}
             className="form-control"
             name="street"
           />
@@ -53,8 +51,7 @@ export class ListingForm extends React.Component {
           <input
             type="text"
             value={this.state.zip}
-            onChange={event =>
-              this.setState({zip: event.target.value })}             
+            onChange={event => this.setState({ zip: event.target.value })}
             className="form-control"
             name="zip"
           />
@@ -64,8 +61,7 @@ export class ListingForm extends React.Component {
           <input
             type="text"
             value={this.state.city}
-            onChange={event =>
-              this.setState({city: event.target.value })}
+            onChange={event => this.setState({ city: event.target.value })}
             className="form-control"
             name="city"
           />
@@ -136,24 +132,8 @@ export class ListingForm extends React.Component {
     );
   }
 }
-//get data from store
-// function mapStateToProps(state){ 
-//   return {
-//     listing: state.listing 
-//   }
-// }
-
-// function mapDispatchToProps(dispatch){
-//   return {
-//     addListing: (item) => {
-//       dispatch({ type: 'ADD', payload: item })
-//     }
-//   }
-// }
-
-// export default connect(mapStateToProps, mapDispatchToProps)(Seller)
 
 export default connect(
   null,
-  dispatch => ({ addListing: (args) => dispatch(addListing(args))})
+  dispatch => ({ addListing: args => dispatch(addListing(args)) })
 )(ListingForm);

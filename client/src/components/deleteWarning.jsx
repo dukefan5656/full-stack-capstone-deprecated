@@ -1,7 +1,6 @@
 import React from 'react';
 import {deleteListing} from '../actions/index';
-import {connect} from 'react-redux';
-import { Link } from "react-router-dom";
+
 
 
 export default function DeleteBox(props) {
@@ -16,4 +15,4 @@ export default function DeleteBox(props) {
     </div>
   )
   };
-
+//add the redux connect to return deleteListing

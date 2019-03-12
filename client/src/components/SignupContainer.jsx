@@ -1,13 +1,14 @@
 import React from "react";
-import "./signup-style.css";
+// import "./signup-style.css";
 import { connect } from "react-redux";
-import { signUp } from "../actions/index";
+import { signup } from "../actions/index";
 export class Signup extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       email: "",
-      password: ""
+      password: "",
+      type: ""
     };
   }
 
@@ -23,7 +24,11 @@ export class Signup extends React.Component {
           <form
             onSubmit={event => {
               event.preventDefault();
-              this.props.login(this.state.email, this.state.password);
+              this.props.signup(
+                this.state.email,
+                this.state.password,
+                this.state.type
+              );
             }}
           >
             <div className="form-group">
@@ -48,6 +53,16 @@ export class Signup extends React.Component {
                 name="password"
               />
             </div>
+            <div className="form-group">
+              <label>User Type</label>
+              <input
+                type="text"
+                value={this.state.type}
+                onChange={event => this.setState({ type: event.target.value })}
+                className="form-control"
+                name="type"
+              />
+            </div>
 
             <button type="submit" className="btn btn-warning btn-lg">
               Sign-up
@@ -68,7 +83,8 @@ export default connect(
   null,
   dispatch => {
     return {
-      signUp: (username, password) => dispatch(signUp(username, password))
+      signup: (username, password, type) =>
+        dispatch(signup(username, password, type))
     };
   }
-)(signUp);
+)(Signup);

@@ -5,10 +5,11 @@ module.exports = function(app, passport) {
     res.send("hello");
   });
 
-  app.get('/listing/:id', (req, res, next) => {
+  app.get('/listing/:id', isLoggedIn, (req, res, next) => {
     Listing.findById(req.params.id)
     .populate({path: "bids",
                populate: {path: "user", select: "local"}})
+    .populate("user")
     .then(listing => {
       console.log(listing);
       return res.json({listing})
@@ -16,7 +17,15 @@ module.exports = function(app, passport) {
     .catch(next);
   })
 
-
+  app.get("/bids/:id", (req, res, next) => {
+    Bid.find({listing: req.params.id})
+    .populate("listing")
+    .then(bid => {
+      console.log(bid)
+      return res.json({bid})
+    })
+    .catch(next);
+  })
 
   app.post('/listings', (req, res, next) => {
     let query = {};
@@ -57,15 +66,17 @@ module.exports = function(app, passport) {
       .catch(next);
   });
 
-  app.get("/agent_profile", (req, res, next) => {
+  app.get("/agent_profile", isLoggedIn, (req, res, next) => {
     let user = req.session.passport.user;
-    User.find({ _id: { $in: user} })
-      .populate("bids")
-      .then(bids => {
-        res.json({ user, bids });
+    User.findOne({ _id: { $in: user} })
+    .populate({path: "bids",
+    populate: {path: "listing", populate: { path: 'user' }}})
+      .then(user => {
+        res.json({ user });
       })
       .catch(next);
   });
+
 
   app.post("/createBid/:id", (req, res, next) => {
     for (const param of ["amount"]) {
@@ -76,7 +87,8 @@ module.exports = function(app, passport) {
     let newBid = {
       amount: req.body.amount,
       listing: req.params.id,
-      user: req.user._id
+      user: req.user._id,
+      status: "pending"
     };
     console.log(newBid);
     Bid.create(newBid)
@@ -135,6 +147,7 @@ module.exports = function(app, passport) {
       city: req.body.city,
       state: req.body.state,
       bids: [],
+      image: "./styles/images/condo-1.jpg",
       user: req.session.passport.user,
       type: req.body.type,
       bed: req.body.bed,
@@ -155,7 +168,32 @@ module.exports = function(app, passport) {
       .catch(next);
   });
 
-  app.put("/updateListing/:id", isLoggedIn, (req, res, next) => {
+  app.put("/updateBid", (req, res, next) => {
+    console.log('request', req.body);
+    const bidEditFields = ["status"];
+    let bidToUpdate = {};
+    
+    bidEditFields.forEach(editedFields => {
+      if(editedFields in req.body) {
+        bidToUpdate[editedFields] = req.body[editedFields];
+      }
+    });
+    console.log(req.body.id);
+    Bid.findById(req.body.id)
+    .catch(() => null)
+    .then(bid => {
+      if(!bid) return;
+      return bid.update({$set: bidToUpdate}, {new: true})
+    })
+    .then(() => {
+      return Bid.findById(req.body.id)
+      .then(updatedBid => {
+        res.json(updatedBid);
+      })
+    });
+  });
+
+  app.put("/updateListing/:id", (req, res, next) => {
     const ListingEditFields = [
       "headline",
       "address",
@@ -178,14 +216,14 @@ module.exports = function(app, passport) {
         ListingToUpdate[editedFields] = req.body[editedFields];
       }
     });
-    Listing.findOne({ _id: req.params.id })
+    Listing.findByIdAndUpdate(req.params.id )
       .catch(() => null)
       .then(listing => {
         if (!listing) return;
-        return listing.update({ $set: ListingToUpdate });
+        return listing.update({ $set: ListingToUpdate }, {new: true});
       })
-      .then(updatedListing => {
-        res.json(updatedListing);
+      .then(listing => {
+        res.json(listing);
       });
   });
 
@@ -224,7 +262,9 @@ module.exports = function(app, passport) {
       successRedirect: "/seller_profile",
       failureRedirect: "/signup",
       failureFlash: true
-    })
+    }), (req) => {
+      console.log(req.body);
+    }
   );
 
   app.get("/connect/local", function(req, res) {

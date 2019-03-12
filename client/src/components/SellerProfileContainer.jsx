@@ -1,68 +1,69 @@
 import React from "react";
 import BidBox from "./BidBoxContainer";
 import MiniSellerListings from "./MiniSellerListingsComponent";
-import SellerMain from "./SellerProfileMainComponent";
 import Navbar from "./NavbarComponent";
 import ListingForm from "./CreateListing";
-import { connect } from 'react-redux';
-import { getSellerPayload, getListing, addListing } from '.././actions/index';
+import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import {
+  getSellerPayload,
+  getListing,
+  addListing,
+  updateBid
+} from ".././actions/index";
+import { denormalize } from "normalizr";
+import { Listing, Bid } from "../schema";
+import "./styles/profile-style.css";
 
 export class Seller extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      editing: false,
-      bids: [],
-      listings: []
-    };
+  componentDidMount() {
+    return this.props.getPayload();
   }
-  setEditing(editing) {
-    this.setState({
-        editing
-    });
-  }
-  componentDidMount(){
-   return this.props.getPayload();
-}
-
-
   render() {
-    console.log(this.props);
     return (
       <div>
         <Navbar />
-        
-          <BidBox bids={this.props.bids} />
-        
+        <Link to="/search">
+          <button>search</button>
+        </Link>
+        {this.props.bids.map(bid => {
+          return <BidBox {...bid} />;
+        })}
+        <div className="heading">
+          <h3>
+            View Your Listings. You can click on one below to view the full
+            details
+          </h3>
+        </div>
         {this.props.listings.map(listing => {
           return <MiniSellerListings {...listing} />;
         })}
-        <SellerMain />
         <ListingForm />
       </div>
     );
   }
 }
-
 export default connect(
+  //if user id was included in the user schema then these could be consolodated
   state => {
-    console.log(state);
-    const user_id = state.user.user;
-    const userListings = Object.values(state.listing).filter(listing => listing.user === user_id);
-    //const sellerBids = userListings.map(listing => listing.bids);
-    const sellerBids = userListings.reduce((bids, listing) => ([...bids, ...listing.bids]), []);
-    console.log(sellerBids);
+    const user_id = state.currentUser.user;
+    const userListings = Object.values(state.entities.listings).filter(
+      listing => listing.user === user_id
+    );
+    const userListingsIds = userListings.map(listingId => listingId._id);
+    const sellerBidsIds = userListings.reduce(
+      (bids, listing) => [...bids, ...listing.bids],
+      []
+    );
+
     return {
-      listings: userListings,
-      bids: sellerBids
-    }
+      listings: denormalize(userListingsIds, [Listing], state.entities),
+      bids: denormalize(sellerBidsIds, [Bid], state.entities)
+    };
   },
   dispatch => {
     return {
-     getPayload: () => dispatch(getSellerPayload()),
-     getListing: () => dispatch(getListing()),
-     addListing: () => dispatch(addListing())
-    }
+      getPayload: () => dispatch(getSellerPayload()),
+    };
   }
 )(Seller);

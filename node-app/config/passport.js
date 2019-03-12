@@ -58,6 +58,7 @@ module.exports = function (app, passport) {
     passport.use('local-signup', new LocalStrategy({
         usernameField: 'email',
         passwordField: 'password',
+        typeField: 'type',
         passReqToCallback: true 
     },
         function (req, email, password, done) {
@@ -78,13 +79,14 @@ module.exports = function (app, passport) {
                             var newUser = new User();
 
                             newUser.local.email = email;
+                            newUser.type = req.body.type;
                             newUser.local.password = newUser.generateHash(password);
                             //newUser.firstName = req.body.firstName
                             newUser.save(function (err) {
                                 if (err){
                                     return done(err);
                                 }
-                                console.log('entered new user');
+                                console.log(req);
                                 return done(null, newUser);
                             });
                         }
@@ -100,6 +102,7 @@ module.exports = function (app, passport) {
                         } else {
                             var user = req.user;
                             user.local.email = email;
+                            user.type = req.body.type
                             user.local.password = user.generateHash(password);
                             user.save(function (err) {
                                 if (err)

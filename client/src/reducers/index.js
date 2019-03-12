@@ -1,10 +1,27 @@
 import * as actions from "../actions";
 
-export const loginReducer = (
-  state = { user: null, email: null, type: null }, action ) => {
-  
+export const currentUserReducer = (
+  state = { user: null, email: null, userType: null },
+  action
+) => {
   switch (action.type) {
     case actions.LOG_IN_SUCCESS:
+      const { user, email, userType } = action;
+      return Object.assign({}, state, {
+        user,
+        email,
+        userType
+      });
+  }
+  return state;
+};
+
+export const signupReducer = (
+  state = { user: null, email: null, type: null },
+  action
+) => {
+  switch (action.type) {
+    case actions.SIGN_UP_SUCCESS:
       const { user, email, type } = action;
       return Object.assign({}, state, {
         user,
@@ -15,71 +32,70 @@ export const loginReducer = (
   return state;
 };
 
-export const messageReducer = (state = null, action) => {
-  if (action.message !== undefined) {
-    return action.message;
-  }
-  return state;
-};
+export const userReducer = (state = {}, action) => {
+  switch (action.type) {
+    case "ADD_LISTING_SUCCESS":
+      const listing = action.entities.listings[action.id];
+      const user = state[listing.user];
+      const updatedUser = { ...user };
+      updatedUser.listings = [...user.listings, listing._id];
+      return { ...state, [user._id]: updatedUser };
 
-//not sure if action.payload._id should be in an array, consider editing if errors
-export const bidReducer = (state = {}, action) => {
-  
-  switch(action.type) {
-    case "ADD_BID_SUCCESS":
-    return {...state, [action.payload._id]: action.payload};
-    break;
-    case 'GET_LISTING_SUCCESS':
-    return {...state, [action.payload._id]: action.payload};
-    break;
-    default: 
+    case "GET_LISTING_SUCCESS":
+      return { ...state, ...action.entities.users };
+    case "GET_AGENT_PAYLOAD_SUCCESS":
+      return { ...state, ...action.entities.users };
+    case "GET_SELLER_PAYLOAD_SUCCESS":
+      return { ...state, ...action.entities.users };
+    default:
       return state;
   }
-}
+};
+
+export const bidReducer = (state = {}, action) => {
+  //making edits to Add Bid with normalize old: return {...state, [action.bid._id]: action.bid};
+  switch (action.type) {
+    case "ADD_BID_SUCCESS":
+      return { ...state, ...action.entities.bids };
+    case "GET_SELLER_PAYLOAD_SUCCESS":
+      return { ...state, ...action.entities.bids };
+    case "GET_AGENT_PAYLOAD_SUCCESS":
+      return { ...state, ...action.entities.bids };
+    case "GET_LISTING_SUCCESS":
+      return { ...state, ...action.entities.bids };
+    case "UPDATE_BID_SUCCESS":
+      return { ...state, ...action.entities.bids };
+    default:
+      return state;
+  }
+};
 //es6
+//editing Add listing success for normalize old: return { ...state, [action.payload._id]: action.payload };
 export const listingReducer = (state = {}, action) => {
   switch (action.type) {
     case "ADD_LISTING_SUCCESS":
-      /*
-      const newState = { ...state };
-      newState[action.payload.id] = action;
-      return newState;
-      */
-      return { ...state, [action.payload._id]: action.payload };
-      break;
-    case 'GET_LISTING_SUCCESS':
-      //action.payload = {}
+      return { ...state, ...action.entities.listings };
+    case "GET_LISTING_SUCCESS":
 
-      return { ...state, [action.payload._id]: action.payload };
-      return Object.assign({}, state, {
-        lists: [...state.lists, {
-            title: action.title,
-        }]
-      });
-      
-    case 'DELETE_LISTING_SUCCESS':
-    return state.filter(({ id }) => id !== action.id);
-    
-    case 'GET_SELLER_PAYLOAD_SUCCESS':
-    //[{-id: id, bla: bla}, {_id: id}]
-    
-      const listingMap = action.payload.listings.reduce((map, listing) => {
-        return { ...map, [listing._id]: listing }
-      }, {});
-      return {...state, ...listingMap};
-      // {id: { _id: id, bla: bla}, id: {_id: id} }
-    //   const map = {};
-    //   for (const listing of action.payload.listings){
-    //     map[listing._id] = listing;
-    //   }
+      return { ...state, ...action.entities.listings };
+    case "GET_AGENT_PAYLOAD_SUCCESS":
 
-    //   const newState = { ...state };
-    //   for (const listing of action.payload.listings){
-    //     newState[listing._id] = listing;
-    //   }
-    //   return newState;
+      return { ...state, ...action.entities.listings };
 
-    //   //return { ...state,  }
+    case "GET_SELLER_PAYLOAD_SUCCESS":
+
+      return { ...state, ...action.entities.listings };
+    case "ADD_BID_SUCCESS":
+      const bid = action.entities.bids[action.id];
+      const listing = state[bid.listing];
+
+      return {
+        ...state,
+        [bid.listing]: { ...listing, bid: [...listing.bids, bid._id] }
+      };
+
+    case "DELETE_LISTING_SUCCESS":
+      return { ...state, ...state.filter(({ id }) => id !== action.id) };
     default:
       return state;
   }

@@ -5,11 +5,9 @@ import LandingDescription from "./LandingDescriptionContainer";
 import "./styles/landing-page.css";
 
 export default function LandingPage() {
-  let image = {
 
-  }
   return (
-    <div className="main" style={image}>
+    <div className="main" >
 
       <LandingNavbar />
 

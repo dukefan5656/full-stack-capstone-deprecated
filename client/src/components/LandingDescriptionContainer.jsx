@@ -13,7 +13,7 @@ export default function LandingDescription() {
       <div class="features-container">
         <div class="features-child">
           <div>
-            <img src="./images/collaboration.png" />
+            <img alt="loading" src="./images/collaboration.png" />
             <span>
               <p>LIST YOUR PROPERTY</p>
               <p>Whether you are selling your house, land, or commercial space, you can list with the confidence that you are in control and will get the best possible price for your listing.</p>
@@ -21,14 +21,14 @@ export default function LandingDescription() {
           </div>
 
           <div class="features-child">
-            <img src="./images/hotel-building.png" />
+            <img alt="loading" src="./images/hotel-building.png" />
             <span>
               <p>ONCE YOU'VE LISTED</p>
               <p>When you list your property, agents will bid on what they believe they can sell your property for. You can also require a bid for commission percentage and other factors involved in the sale.</p>
             </span>
           </div>
           <div class="features-child">
-            <img src="./images/route.png" />
+            <img alt="loading" src="./images/route.png" />
             <span>
               <p>BIDS</p>
               <p>You will also be able to set what kind of bidding you'd like. Whether the bids are silent or public. Also, you can set whether you will field private offers from buyers.</p>

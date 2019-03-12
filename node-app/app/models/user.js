@@ -32,13 +32,15 @@ const listingSchema = mongoose.Schema ({
     bed: Number,
     bath: Number,
     footage: Number,
+    image: String,
     description: String,
     issuedAt: Date,
     expiresAt: Date,
     deleted: {
       deletedDate: Date,
       is: Boolean
-    }
+    },
+    status: String
   },{usePushEach: true});
 
   const bidSchema = mongoose.Schema ({
@@ -49,7 +51,8 @@ const listingSchema = mongoose.Schema ({
       ref: "Listing"
     },
     amount: Number,
-    createdAt: Date
+    createdAt: Date,
+    status: String
   },{usePushEach: true});
 
 
