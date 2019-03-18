@@ -8,9 +8,9 @@
   "scripts": {
     "start": "node index.js",
     "test": "mocha --exit",
-    "server": "nodemon server.js",
-    "client": "npm start --prefix client",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "server": "nodemon index.js",
+    "client": "npm start",
+    "dev": "concurrently \"node index.js\" \"npm start\""
   },
   "keywords": [],
   "author": "",
