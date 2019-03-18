@@ -4,7 +4,10 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "mocha --exit"
+    "test": "mocha --exit",
+    "server": "nodemon server.js",
+    "client": "npm start --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "keywords": [],
   "author": "",
