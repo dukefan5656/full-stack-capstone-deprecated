@@ -67,7 +67,7 @@ module.exports = { app, DATABASE_URL };
 let server;
 
 
-function runServer(DATABASE_URL, port=PORT) {
+function runServer(DATABASE_URL, port=port) {
   return new Promise((resolve, reject) => {
     mongoose.connect(DATABASE_URL, err => {
       if (err) {
