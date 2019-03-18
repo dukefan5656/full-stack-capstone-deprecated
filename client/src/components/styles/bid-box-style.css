@@ -1,0 +1,40 @@
+li{
+  list-style: none;
+}
+
+.bid-box-container{
+  display: flex;
+  
+  
+  flex-direction: column;
+}
+ul{
+  padding-left: 0;
+}
+
+.accepted{
+  background-color: green;
+}
+
+.rejected{
+  background-color: red;
+}
+
+button{
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-bottom: 20px;
+  top: 50%;
+  left: 50%;
+  cursor: pointer;
+  border-radius: 5px;
+  padding: 5px;
+  justify-content: center;
+  -webkit-appearance: button;
+  -moz-appearance: button;
+  appearance: button;
+  background-color: #a4a726;
+  text-decoration: none;
+  color: initial;
+}
+

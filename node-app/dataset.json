@@ -1,0 +1,7 @@
+{"headline":"this is the headline","address":{"street":"2 lake st","zip":"28805","city":"Asheville","state":"NC"},
+"type":"house","bed":"2","bath":"2", "footage":"2000", "description":"This is the description"}
+
+{"email": "cbrudder84@gmail.com", "password": "devils88"}
+
+
+db.capstone.users.findAndModify({query: {_id: "5c6e6d3581af1a452cec9a2e"}, update:{$set: {type: "agent"}}});

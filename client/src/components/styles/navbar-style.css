@@ -1,0 +1,30 @@
+.navbar-container{
+  width: 100%;
+  flex-grow: 1;
+  display: flex;
+  height: 70px;
+  background-color: #decca6;
+}
+.navbar-container h1{
+  flex-grow: 9;
+  color: #193d5c;
+  text-align: left;
+  margin-left: 50px;
+}
+.button-container{
+  flex-grow: 1;
+  margin-right: 0;
+  height: 100%;
+  width: 70px;
+  max-width: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #a4a726;
+
+}
+
+.button-container p{
+  color: white;
+  
+}

@@ -1,0 +1,15 @@
+.agent-profile-container{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  background-color: #193d5c;
+  padding-top: 20px;
+}
+
+.alert{
+  text-align: center;
+}
+.search-link{
+  text-align: center;
+  margin-top: 60px;
+}
