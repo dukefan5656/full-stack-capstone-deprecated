@@ -17,5 +17,5 @@ node_modules
 coverage
 .nyc_output
 
-config/database.js
+
 config/auth.js
