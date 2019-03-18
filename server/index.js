@@ -23,6 +23,7 @@ app.locals.db = mongoose.connect(DATABASE_URL, {
     }
 }); 
 
+mongoose.Promise = global.Promise;
 require('./config/passport')(app, passport);
 
 if (process.env.NODE_ENV !== 'test'){
@@ -62,3 +63,4 @@ if (require.main === module){
 }
 
 module.exports = { app, DATABASE_URL };
+
