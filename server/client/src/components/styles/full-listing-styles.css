@@ -1,0 +1,17 @@
+
+
+.listing-info{
+  text-align: center;
+}
+
+.listing-view{
+  background-color: #193d5c;
+  width: 50%;
+  display: inline-block;
+  margin-bottom: 20px;
+}
+
+.listing-container{
+  justify-content: center;
+  text-align: center;
+}

@@ -1,0 +1,74 @@
+import { createStore, combineReducers, applyMiddleware } from "redux";
+import { persistStore, persistReducer } from 'redux-persist'
+import storageSession from 'redux-persist/lib/storage/session'
+import {
+  listingReducer,
+  currentUserReducer,
+  bidReducer,
+  userReducer
+} from "./reducers/index";
+import Thunk from "redux-thunk";
+import { composeWithDevTools } from "redux-devtools-extension";
+
+// const persistedState = loadState();
+const persistConfig = {
+  key: 'root',
+  storage: storageSession
+}
+
+const rootReducer = combineReducers({
+  currentUser: currentUserReducer,
+
+  entities: combineReducers({
+    listings: listingReducer,
+    users: userReducer,
+    bids: bidReducer
+  })
+});
+const persistedReducer = persistReducer(persistConfig, rootReducer)
+const store = createStore(
+  persistedReducer,
+  composeWithDevTools(applyMiddleware(Thunk))
+);
+let persistor = persistStore(store);
+
+export {store, persistor};
+
+
+
+
+import { createStore, combineReducers, applyMiddleware } from "redux";
+import {
+  listingReducer,
+  currentUserReducer,
+  bidReducer,
+  userReducer
+} from "./reducers/index";
+import Thunk from "redux-thunk";
+
+import { composeWithDevTools } from "redux-devtools-extension";
+
+
+const appReducer = combineReducers({
+  currentUser: currentUserReducer,
+  entities: combineReducers({
+    listings: listingReducer,
+    users: userReducer,
+    bids: bidReducer
+})
+})
+
+const rootReducer = (state, action) => {
+  if (action.type === 'LOGOUT_SUCCESS') {
+    state = undefined
+  }
+
+  return appReducer(state, action)
+}
+
+const store = createStore(
+  rootReducer,
+  composeWithDevTools(applyMiddleware(Thunk))
+);
+
+export default store;

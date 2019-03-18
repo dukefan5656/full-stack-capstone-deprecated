@@ -1,0 +1,146 @@
+.features{
+  display: flex;
+  flex-direction: column;
+}
+
+.landing-page {
+  margin-bottom: 50px;
+  text-align: center;
+}
+
+#features h2{
+  justify-content: center;
+  text-align: center;
+}
+
+#description{
+	width: 95%;
+}
+.landing-desc {
+  display: block;
+  text-align: center;
+  text-shadow: 0 1px 1px rgba(30, 40, 53, 0.2);
+  font-size: 3rem;
+  font-family: 'Roboto', sans-serif;
+  
+  color: #F4F8FC;
+  max-width: 1024px;
+  width: 80%;
+}
+
+.features-child{
+  margin-bottom: 40px;
+}
+
+.landing-features{
+  background-color: #659DBD;
+}
+
+.landing-page .landing-text {
+  font-size: 3rem;
+  font-family: 'Roboto', sans-serif;
+  color: #F4F8FC;
+  max-width: 1024px;
+  width: 80%;
+}
+
+.landing-desc .main-tag {
+  display: block;
+  text-shadow: 0 1px 1px rgba(30, 40, 53, 0.2);
+}
+
+.landing-page .landing-text .second-tag {
+  
+  display: block;
+  font-size: 1rem;
+  font-family: 'Open Sans', sans-serif;
+  margin-top: 15px;
+  line-height: 20px;
+}
+
+.landing-features {
+  padding-bottom: 70px;
+}
+
+.landing-features .features-container {
+  max-width: 1024px;
+  width: 100%;
+  color: #F4F8FC;
+  margin: 0 auto;
+  background-color: #659DBD;
+}
+
+.landing-features .features-container .features {
+  display: flex;
+  justify-content: center;
+  margin-top: 3rem;
+  
+}
+
+#description {
+	width: 70%;
+	max-width: 100%;
+	margin-top: 30px;
+}
+
+.landing-features .features-container h2 {
+  text-align: center;
+  padding-top: 5rem;
+}
+
+.landing-features .features-container .features .features-child span {
+  display: block;
+  width: 80%;
+  text-align: center;
+  font-size: 1.2rem;
+  margin: 0 auto;
+}
+
+.features-child img {
+	display:block;
+	margin:auto;
+	padding-bottom: 35px;
+}
+
+
+.landing-desc .profile{
+	padding-top: 0;
+}
+
+.login {
+  justify-content: center;
+  max-width: 145px;
+  display: flex;
+  margin: 0 auto;
+  margin-top: 70px;
+}
+
+.button {
+  margin-right: 10px;
+  top: 50%;
+  left: 50%;
+  cursor: pointer;
+  border-radius: 5px;
+  padding: 5px;
+  margin: 0 auto;
+  justify-content: center;
+  -webkit-appearance: button;
+  -moz-appearance: button;
+  appearance: button;
+  background-color: #a4a726;
+  text-decoration: none;
+  color: initial;
+}
+
+button:hover{
+  background-color: #2A6BBF;
+  color: white;
+  border: 2px solid #2A6BBF;
+}
+
+.landing-page a{
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+
