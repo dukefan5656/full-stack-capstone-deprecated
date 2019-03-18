@@ -6,9 +6,9 @@
   },
   "main": "index.js",
   "scripts": {
-    "start": "node server/index.js",
+    "start": "node index.js",
     "test": "mocha --exit",
-    "server": "nodemon index.js",
+    "server": "node index.js",
     "client": "npm start",
     "dev": "concurrently \"node index.js\" \"npm start\""
   },
