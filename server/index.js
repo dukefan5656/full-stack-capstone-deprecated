@@ -10,8 +10,8 @@ var cookieParser = require('cookie-parser');
 // var bodyParser   = require('body-parser');
 var session      = require('express-session');
 
-var {DATABASE_URL} = require('./config/database.js');
-var {CLIENT_ORIGIN} = require('./config/server.js');
+import DATABASE_URL from './config/database.js';
+import CLIENT_ORIGIN from './config/server.js';
 
 app.locals.db = mongoose.connect(DATABASE_URL, {
     useNewUrlParser: true
