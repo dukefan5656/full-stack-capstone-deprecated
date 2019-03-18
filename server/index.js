@@ -64,30 +64,4 @@ if (require.main === module){
 
 module.exports = { app, DATABASE_URL };
 
-let server;
 
-
-function runServer(DATABASE_URL, port=port) {
-  return new Promise((resolve, reject) => {
-    mongoose.connect(DATABASE_URL, err => {
-      if (err) {
-        return reject(err);
-      }
-
-      server = app.listen(port, () => {
-        console.log(`Your app is listening on port ${port}`);
-        resolve();
-      })
-      .on('error', err => {
-        mongoose.disconnect();
-        reject(err);
-      });
-    });
-  });
-}
-
-// `closeServer` function is here in original code
-
-if (require.main === module) {
-  runServer(DATABASE_URL).catch(err => console.error(err));
-};
