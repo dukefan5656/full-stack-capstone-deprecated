@@ -16,7 +16,7 @@ export function MiniSellerListings(props) {
       <div className="mini-listings">
       <li>{props.headline}</li>
           <li>
-            <img alt="loading" src={require(`${props.image}`)}/>
+            <img alt="loading" src={require("./styles/images/condo-1.jpg")}/>
           </li>
           
       <DeleteBox 
